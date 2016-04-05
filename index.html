@@ -25,12 +25,6 @@
   <h1 style="text-align:center"> All the Way South: My Journey in Taiwan </div>
   <div id = 'map'></div>
     <script>
-    	var map = L.map('map').setView([23.7118339,120.9517263],8);
-    	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    		attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    		
-    	}).addTo(map);
-		
 	var myGeoJSON = {
 		'type':'FeatureCollection',
 		'feature': [
@@ -77,8 +71,15 @@
 					'img':'<img src="http://ngm.nationalgeographic.com/u/TvyamNb-BivtNwcoxtkc5xGBuGkIMh_nj4UJHQKuorvNwOLKOIrtqMxKuHQYAC0VLmw_pc7j0_cnUQ/"/>'},
 				'geometry':{'type:'Point','coordinates':[22.0445923,121.5153158]}}
 			]};
-	L.geoJson(myGeoJSON).addTo(map);
+	function onEachFeature(feature,layer){
+		layer.bindPopup("<h1>"+feature.properties.name+"<h1><p>"+feature.properties.caption+"</p>"+feature.properties.img);
+	}
+	var map = L.map('map').setView([23.7118339,120.9517263],8);
 	
+	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+
+	var geojsonlayer = L.geoJson(geo, {onEachFeature: onEachFeature}).addTo(map);
+
 	var polyline = L.polyline([
             [25.1111068,121.8350522],
             [25.085651,121.4228205],
